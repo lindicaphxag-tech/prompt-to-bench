@@ -4,6 +4,9 @@ on:
     branches:
       - research/slide-registration-jig-candidate-20261120
   workflow_dispatch:
+concurrency:
+  group: slide-jig-ci
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
@@ -20,25 +23,14 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y openscad libgl1 libglu1-mesa
           python -m pip install -r requirements.txt
-      - name: Test original 16-task harness without altering committed benchmark
+      - name: Test official harness on real 17-task benchmark
         run: |
           mkdir -p validation-logs
-          cp bench/tasks.yaml /tmp/tasks-with-candidate.yaml
-          python - <<'PY'
-          from pathlib import Path
-          import yaml
-          p=Path('bench/tasks.yaml')
-          items=yaml.safe_load(p.read_text())
-          assert len(items)==17 and sum(t['id']=='slide_registration_jig' for t in items)==1
-          p.write_text(yaml.safe_dump([t for t in items if t['id']!='slide_registration_jig'],sort_keys=False))
-          print('Running legacy harness on its original frozen 16-task population')
-          PY
-          python bench/test_harness.py > validation-logs/test_harness_baseline.log 2>&1 || {
-            tail -n 120 validation-logs/test_harness_baseline.log
+          python bench/test_harness.py > validation-logs/test_harness.log 2>&1 || {
+            tail -n 120 validation-logs/test_harness.log
             exit 1
           }
-          cp /tmp/tasks-with-candidate.yaml bench/tasks.yaml
-          tail -n 30 validation-logs/test_harness_baseline.log
+          tail -n 40 validation-logs/test_harness.log
       - name: Verify candidate is fully integrated
         run: |
           python - <<'PY'
