@@ -1,0 +1,67 @@
+name: Microfluidic holder - author-side official suite
+on:
+  push:
+    branches:
+      - verification/microfluidic-upstream-suite-20261120
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: microfluidic-holder-validation
+  cancel-in-progress: true
+jobs:
+  official-reproduction:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install geometry toolchain
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y openscad libgl1 libglu1-mesa
+          python -m pip install -r requirements.txt
+      - name: Audit 17 benchmark task IDs and frozen new stats
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json, yaml
+          tasks = yaml.safe_load(Path('bench/tasks.yaml').read_text())
+          ids = [t['id'] for t in tasks]
+          stats = json.loads(Path('bench/reference_stats.json').read_text())
+          assert len(ids) == len(set(ids)) == 17, (len(ids), len(set(ids)))
+          assert set(ids) == set(stats), sorted(set(ids)^set(stats))
+          assert 'microfluidic_chip_imaging_holder' in ids
+          print('PASS 17 distinct tasks and reference-stat keys')
+          PY
+      - name: Official harness regression
+        run: |
+          mkdir -p validation-logs
+          python bench/test_harness.py > validation-logs/harness.log 2>&1 || {
+            tail -n 100 validation-logs/harness.log
+            exit 1
+          }
+          tail -n 25 validation-logs/harness.log
+      - name: Official frozen reference/cross-task/mutant/variant evaluation
+        run: |
+          python bench/build_refs.py > validation-logs/refs.log 2>&1 || {
+            tail -n 150 validation-logs/refs.log
+            exit 1
+          }
+          tail -n 70 validation-logs/refs.log
+      - name: Library design and parameter assertions
+        run: |
+          python tools/check_designs.py > validation-logs/designs.log 2>&1 || {
+            tail -n 110 validation-logs/designs.log
+            exit 1
+          }
+          tail -n 30 validation-logs/designs.log
+      - name: Archive reproducible evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: microfluidic-upstream-suite
+          path: validation-logs/
+          if-no-files-found: warn
