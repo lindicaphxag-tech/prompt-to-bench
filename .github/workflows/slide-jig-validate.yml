@@ -20,6 +20,14 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y openscad libgl1 libglu1-mesa
           python -m pip install -r requirements.txt
+      - name: Official harness regressions (frozen 16-task baseline)
+        run: |
+          mkdir -p validation-logs
+          python bench/test_harness.py > validation-logs/test_harness_baseline.log 2>&1 || {
+            tail -n 120 validation-logs/test_harness_baseline.log
+            exit 1
+          }
+          tail -n 30 validation-logs/test_harness_baseline.log
       - name: Add candidate to temporary runner task set only
         run: |
           python - <<'PY'
@@ -46,18 +54,16 @@ jobs:
             exit 1
           }
           tail -n 120 validation-logs/build_refs.log
+          python - <<'PY'
+          import json
+          p=json.load(open('bench/reference_stats.json'))
+          print('CANDIDATE_REFERENCE_STATS_JSON='+json.dumps(p['slide_registration_jig'],sort_keys=True))
+          PY
           python bench/build_refs.py > validation-logs/build_refs_frozen.log 2>&1 || {
             tail -n 140 validation-logs/build_refs_frozen.log
             exit 1
           }
           tail -n 60 validation-logs/build_refs_frozen.log
-      - name: Official harness regressions
-        run: |
-          python bench/test_harness.py > validation-logs/test_harness.log 2>&1 || {
-            tail -n 120 validation-logs/test_harness.log
-            exit 1
-          }
-          tail -n 80 validation-logs/test_harness.log
       - name: Archive validation logs and temporary reference stats
         if: always()
         uses: actions/upload-artifact@v4
