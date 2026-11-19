@@ -1,0 +1,33 @@
+name: Chinese labware translation lexical audit
+on:
+  push:
+    branches: [verification/zh-lexical-ci-20261120]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  zh-lexical:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install YAML parser
+        run: python -m pip install 'PyYAML>=6.0,<7'
+      - name: Check all 16 translated tasks, numbers and signs
+        run: python bench/prompts/validate_zh.py
+      - name: Run negative regression tests
+        run: python -m unittest discover -s bench/prompts -p 'test_validate_zh.py' -v
+      - name: Verify all task IDs preserved and no translation overwrite
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import yaml
+          t=yaml.safe_load(Path('bench/tasks.yaml').read_text(encoding='utf-8'))
+          z=yaml.safe_load(Path('bench/prompts/translations.yaml').read_text(encoding='utf-8'))['zh']
+          assert len(t)==len(z)==16
+          assert set(q['id'] for q in t)==set(z)
+          print('PASS task coverage exactly 16/16')
+          PY
