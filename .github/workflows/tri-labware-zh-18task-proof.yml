@@ -1,0 +1,73 @@
+name: Three-contribution 18-task + Chinese subset integration
+on:
+  push:
+    branches:
+      - verification/tri-labware-translation-integration-20261120
+    paths:
+      - '.github/workflows/tri-labware-zh-18task-proof.yml'
+      - 'bench/**'
+      - 'designs/**'
+      - 'tools/check_designs.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  proof:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install OpenSCAD and benchmark dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq openscad libgl1 libglu1-mesa
+          python -m pip install -r requirements.txt
+      - name: Validate 18 tasks and deliberate 16-task Chinese subset
+        run: |
+          mkdir -p tri-logs
+          python - <<'PY' | tee tri-logs/manifest.txt
+          import json, yaml
+          from pathlib import Path
+          tasks=yaml.safe_load(Path('bench/tasks.yaml').read_text(encoding='utf-8'))
+          ids=[t['id'] for t in tasks]
+          stats=json.loads(Path('bench/reference_stats.json').read_text(encoding='utf-8'))
+          translations=yaml.safe_load(Path('bench/prompts/translations.yaml').read_text(encoding='utf-8'))
+          assert len(ids) == len(set(ids)) == len(stats) == 18
+          assert set(ids) == set(stats)
+          assert len(translations['zh']) == 16
+          assert set(translations['zh']) <= set(ids)
+          assert set(ids) - set(translations['zh']) == {'slide_registration_jig', 'microfluidic_chip_imaging_holder'}
+          print('18 EN TASKS / 16 LEGACY ZH TRANSLATIONS; 2 NEW TASKS NOT TRANSLATED')
+          PY
+      - name: Check Chinese lexical integrity and failure propagation
+        run: |
+          bash -n bench/run_lang.sh
+          python -m unittest -v bench.prompts.test_validate_zh > tri-logs/zh-tests.txt 2>&1 || {
+            tail -n 70 tri-logs/zh-tests.txt; exit 1;
+          }
+          python bench/prompts/validate_zh.py | tee tri-logs/zh-audit.txt
+      - name: Run full 18-task harness
+        run: |
+          python bench/test_harness.py > tri-logs/harness.txt 2>&1 || { tail -n 100 tri-logs/harness.txt; exit 1; }
+          tail -n 18 tri-logs/harness.txt
+      - name: Run reference/mutant/symmetry/cross-task checks
+        run: |
+          python bench/build_refs.py > tri-logs/geometry.txt 2>&1 || { tail -n 100 tri-logs/geometry.txt; exit 1; }
+          tail -n 25 tri-logs/geometry.txt
+      - name: Run parametric design checks
+        run: |
+          python tools/check_designs.py > tri-logs/designs.txt 2>&1 || { tail -n 100 tri-logs/designs.txt; exit 1; }
+          tail -n 25 tri-logs/designs.txt
+      - name: Capture exact tested SHA
+        if: always()
+        run: git rev-parse HEAD > tri-logs/commit.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tri-18task-zh-integration-logs
+          path: tri-logs/
+          if-no-files-found: warn
+          retention-days: 30
