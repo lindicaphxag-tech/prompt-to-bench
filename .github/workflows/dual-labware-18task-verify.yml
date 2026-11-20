@@ -1,0 +1,66 @@
+name: Dual labware 18-task integration proof
+on:
+  push:
+    branches:
+      - verification/dual-labware-18task-integration-20261120
+    paths:
+      - '.github/workflows/dual-labware-18task-verify.yml'
+      - 'bench/**'
+      - 'designs/**'
+      - 'tools/check_designs.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  proof:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install open-source geometry tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq openscad libgl1 libglu1-mesa
+          python -m pip install -r requirements.txt
+      - name: Verify exact task identities and frozen geometry records
+        run: |
+          mkdir -p integration-logs
+          python - <<'PY' | tee integration-logs/manifest.log
+          import json, yaml
+          from pathlib import Path
+          tasks = yaml.safe_load(Path('bench/tasks.yaml').read_text())
+          ids = [task['id'] for task in tasks]
+          stats = json.loads(Path('bench/reference_stats.json').read_text())
+          assert len(ids) == len(set(ids)) == 18
+          assert set(ids) == set(stats)
+          for name in ('slide_registration_jig', 'microfluidic_chip_imaging_holder'):
+              assert ids.count(name) == 1
+              assert stats[name]['volume'] > 0
+          print('18_TASK_MANIFEST_AND_FROZEN_GEOMETRY_PASS')
+          PY
+      - name: Run complete benchmark harness
+        run: |
+          python bench/test_harness.py > integration-logs/harness.log 2>&1 || { tail -n 90 integration-logs/harness.log; exit 1; }
+          tail -n 20 integration-logs/harness.log
+      - name: Run independent reference, mutation and symmetry checks
+        run: |
+          python bench/build_refs.py > integration-logs/build_refs.log 2>&1 || { tail -n 90 integration-logs/build_refs.log; exit 1; }
+          tail -n 35 integration-logs/build_refs.log
+      - name: Run all parametric labware design checks
+        run: |
+          python tools/check_designs.py > integration-logs/designs.log 2>&1 || { tail -n 90 integration-logs/designs.log; exit 1; }
+          tail -n 25 integration-logs/designs.log
+      - name: Preserve exact commit and evidence
+        if: always()
+        run: |
+          git rev-parse HEAD > integration-logs/head.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dual-labware-18task-evidence
+          path: integration-logs/
+          if-no-files-found: warn
+          retention-days: 30
