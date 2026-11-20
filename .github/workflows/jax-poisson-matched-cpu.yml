@@ -52,14 +52,14 @@ jobs:
           mkdir -p results
           python audit/validation/poisson_41228_repro_benchmark.py \
             --source base --revision base --output results/base.json \
-            --batch-size 8192 --repeats 4
+            --batch-size 8192 --repeats 40
       - name: Verify JAX is really loaded from PATCHED checkout
         env:
           PYTHONPATH: ${{ github.workspace }}/patched
         run: |
           python audit/validation/poisson_41228_repro_benchmark.py \
             --source patched --revision patched --output results/patched.json \
-            --batch-size 8192 --repeats 4
+            --batch-size 8192 --repeats 40
       - name: Compare variance correction and report slowdown without hiding it
         run: |
           python - <<'PY' | tee results/comparison.txt
