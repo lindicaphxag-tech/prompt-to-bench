@@ -35,7 +35,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: lindicaphxag-tech/jax
-          ref: d4d3b491bff6533e036b6bd720e30d1cfee30b35
+          ref: 735b5b1ab8cae36f6a269efa31a75f8107bea67c
           path: patched
           persist-credentials: false
       - uses: actions/setup-python@v5
@@ -90,7 +90,7 @@ jobs:
         if: always()
         run: |
           mkdir -p results
-          printf 'base=d3f12669d7db55596d413eba9cfcd214ae5a3ea4\npatched=d4d3b491bff6533e036b6bd720e30d1cfee30b35\n' > results/commits.txt
+          printf 'base=d3f12669d7db55596d413eba9cfcd214ae5a3ea4\npatched=735b5b1ab8cae36f6a269efa31a75f8107bea67c\n' > results/commits.txt
       - uses: actions/upload-artifact@v4
         if: always()
         with:
