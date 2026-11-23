@@ -43,6 +43,7 @@ ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 from checks import evaluate, ref_problems  # noqa: E402
+from prompts.run_provenance import bind_metadata  # noqa: E402
 from scadreport import analyse, format_report, keep_messages, load_mesh, openscad_missing, render  # noqa: E402
 
 OLLAMA = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
@@ -449,13 +450,17 @@ def main():
         if not os.path.isfile(f):
             ap.error(f"no such file: {f}")
 
-    tasks = yaml.safe_load(open(os.path.join(HERE, "tasks.yaml")))
+    with open(os.path.join(HERE, "tasks.yaml"), "rb") as fh:
+        task_bytes = fh.read()
+    tasks = yaml.safe_load(task_bytes)
     if args.tasks:
         unknown = sorted(set(args.tasks) - {t["id"] for t in tasks})
         if unknown:
             raise SystemExit(f"unknown task id(s): {', '.join(unknown)} (see bench/tasks.yaml)")
         tasks = [t for t in tasks if t["id"] in args.tasks]
-    refs = json.load(open(os.path.join(HERE, "reference_stats.json")))
+    with open(os.path.join(HERE, "reference_stats.json"), "rb") as fh:
+        reference_bytes = fh.read()
+    refs = json.loads(reference_bytes)
     for t in tasks:  # a broken reference would be scored as the model's failure
         if ref_problems(t, refs.get(t["id"])):
             raise SystemExit(f"{t['id']}: {ref_problems(t, refs.get(t['id']))} - run bench/build_refs.py")
@@ -523,6 +528,10 @@ def main():
         meta["ollama"] = json.load(urllib.request.urlopen(f"{OLLAMA}/api/version", timeout=5))["version"]
     except Exception:  # noqa: BLE001
         pass
+    protocol_sha = bind_metadata(
+        meta, task_source_sha256=hashlib.sha256(task_bytes).hexdigest(),
+        reference_sha256=hashlib.sha256(reference_bytes).hexdigest(),
+        system=system, prompts={t["id"]: t["prompt_used"] for t in tasks})
     with open(os.path.join(out_dir, f"meta_{dt.datetime.now():%Y%m%d_%H%M%S}.json"), "w") as fh:
         json.dump(meta, fh, indent=1)
 
@@ -562,6 +571,7 @@ def main():
                 infra_fails = 0
                 rec = {"model": model, "task": t["id"], "category": t["category"], "sample": s,
                        "lang": args.lang, "feedback": args.feedback, "max_repairs": args.max_repairs,
+                       "protocol_sha256": protocol_sha,
                        "passed": any(a.get("passed") for a in attempts),
                        "first_pass": bool(attempts and attempts[0].get("passed")),
                        "attempts_used": len(attempts), "wall_s": round(time.time() - t0, 1),
