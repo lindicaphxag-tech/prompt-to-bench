@@ -8,6 +8,7 @@ on:
     paths:
       - 'bench/prompts/**'
       - 'bench/run_lang.sh'
+      - 'bench/run_bench.py'
       - '.github/workflows/zh-labware-review-validation.yml'
   workflow_dispatch:
 
@@ -28,7 +29,8 @@ jobs:
       - name: Validate Bash and fail-closed language runner tests
         run: |
           bash -n bench/run_lang.sh
-          python -m unittest -v bench.prompts.test_validate_zh bench.prompts.test_validate_zh_semantics bench.prompts.test_paired_inference bench.prompts.test_paired_from_runs
+          python -m unittest -v bench.prompts.test_validate_zh bench.prompts.test_validate_zh_semantics bench.prompts.test_paired_inference bench.prompts.test_paired_from_runs bench.prompts.test_run_provenance
+          python -m py_compile bench/run_bench.py
       - name: Validate all currently translated task constraints
         run: |
           python bench/prompts/validate_zh.py
