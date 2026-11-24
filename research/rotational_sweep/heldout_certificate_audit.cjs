@@ -1,0 +1,12 @@
+function evaluate(files,produce,verify,gen,verifyAlg){
+ const gcd=(a,b)=>{a=a<0n?-a:a;b=b<0n?-b:b;while(b)[a,b]=[b,a%b];return a};
+ const empty=()=>({queries:0,colliding:0,SAFE:0,COLLISION:0,UNKNOWN:0,wrong:0,rejected:0,algebraic:0,leaves:0,nodes:0,proofBytes:0,maxProofBytes:0,produceMs:0,verifyMs:0,tamperAttempts:0,tamperAccepted:0});
+ const totals=empty(),rows=[];
+ for(const f of files){const rs=f.content.trim().split(/\r?\n/).filter(x=>x.trim()).map(x=>x.split(",").map(y=>BigInt(y.trim())));if(rs.length%8||rs.some(r=>r.length!==7||[1,3,5].some(i=>r[i]<=0n)))throw Error("bad CSV");const ee=f.path.includes("edge-edge"),s=empty(),unknown=[],perQuery=[];
+ for(let i=0;i<rs.length;i+=8){const rr=rs.slice(i,i+8);if(!rr.every(r=>r[6]===rr[0][6])||![0n,1n].includes(rr[0][6]))throw Error("bad label");let d=1n;for(const r of rr)for(const j of [1,3,5])d=d/gcd(d,r[j])*r[j];const p=rr.map(r=>[0,2,4].map(j=>r[j]*(d/r[j+1]))),truth=rr[0][6]===1n;s.queries++;s.colliding+=+truth;let t=Date.now(),c=produce(p,ee),alg=false;s.nodes+=c.nodes;if(c.status==="UNKNOWN"){const v=gen(p,ee);if(v.status==="COLLISION"){c=v;alg=true;s.algebraic++}}s.produceMs+=Date.now()-t;s[c.status]++;if(c.status==="UNKNOWN"){unknown.push({query:i/8,truth});continue}s.wrong+=+(truth!==(c.status==="COLLISION"));t=Date.now();const check=alg?verifyAlg:verify,ok=check(p,ee,c);s.verifyMs+=Date.now()-t;s.rejected+=+!ok;const bytes=JSON.stringify(c).length;s.proofBytes+=bytes;s.maxProofBytes=Math.max(s.maxProofBytes,bytes);if(c.status==="SAFE")s.leaves+=c.leaves.length;
+ const bad=c.status==="SAFE"?{...c,leaves:c.leaves.slice(1)}:alg?{...c,witness:{...c.witness,subset:[]}}:{...c,witness:{...c.witness,path:"x"}};s.tamperAttempts++;s.tamperAccepted+=+check(p,ee,bad);perQuery.push({query:i/8,status:c.status,alg,bytes,ok});
+ }for(const k in s)totals[k]=k==="maxProofBytes"?Math.max(totals[k],s[k]):totals[k]+s[k];rows.push({path:f.path,sha:f.sha,range:f.range,...s,unknown,perQuery})
+ }return {totals,rows}
+}
+module.exports={evaluate};
+if(require.main===module){const fs=require('node:fs'),{produce}=require('./produce_certificate.cjs'),{verify}=require('./verify_certificate.cjs'),{algebraicWitness}=require('./algebraic_witness.cjs'),{verifyAlgebraic}=require('./verify_algebraic_witness.cjs');console.log(JSON.stringify(evaluate(process.argv.slice(2).map(path=>({path,content:fs.readFileSync(path,'utf8'),range:'full file'})),produce,verify,algebraicWitness,verifyAlgebraic),null,2));}
