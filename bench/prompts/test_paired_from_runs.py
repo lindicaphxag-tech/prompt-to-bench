@@ -123,5 +123,36 @@ class RawPairedTests(unittest.TestCase):
             self.infer()
 
 
+    def test_pass_without_render_refuse(self):
+        en = [self.item(f't{i}', 'en') for i in range(16)]
+        en[0] = self.item('t0', 'en', good=True, render=False)
+        self.record(en=en)
+        with self.assertRaisesRegex(ValueError, 'successful rendering'):
+            self.infer()
+
+    def test_attempt_after_first_pass_refuse(self):
+        en = [self.item(f't{i}', 'en') for i in range(16)]
+        en[0] = self.item('t0', 'en', good=True, render=True)
+        en[0]['attempts'].append({'passed': False, 'render': {'ok': False}})
+        en[0]['attempts_used'] = 2
+        self.record(en=en)
+        with self.assertRaisesRegex(ValueError, 'after first pass'):
+            self.infer()
+
+    def test_contradictory_check_refuse(self):
+        en = [self.item(f't{i}', 'en') for i in range(16)]
+        en[0]['attempts'][0]['check'] = {'passed': True}
+        self.record(en=en)
+        with self.assertRaisesRegex(ValueError, 'contradicts'):
+            self.infer()
+
+    def test_wrong_attempt_index_refuse(self):
+        en = [self.item(f't{i}', 'en') for i in range(16)]
+        en[0]['attempts'][0]['attempt'] = 1
+        self.record(en=en)
+        with self.assertRaisesRegex(ValueError, 'not consecutive'):
+            self.infer()
+
+
 if __name__=='__main__':
     unittest.main()
