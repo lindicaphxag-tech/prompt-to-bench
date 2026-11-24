@@ -1,0 +1,358 @@
+{
+  "source": "https://github.com/Continuous-Collision-Detection/Sample-Queries",
+  "scope": "Additional fixed public scenes; exact same algorithm and budget as initial five-file replay. No tuning on these results.",
+  "results": [
+    {
+      "path": "erleben-spike-crack/edge-edge/data_0_0.csv",
+      "sha": "025f00455d9bfbfd81229c1ae34f38bd3d811c59",
+      "queries": 125,
+      "colliding": 0,
+      "methods": {
+        "aabb": {
+          "safe": 51,
+          "unsafeSafe": 0,
+          "negativeCertified": 51,
+          "nodes": 2501,
+          "counts": {
+            "aabb": 59,
+            "coplanar": 0,
+            "hull": 0
+          },
+          "elapsedMs": 21
+        },
+        "bernstein": {
+          "safe": 125,
+          "unsafeSafe": 0,
+          "negativeCertified": 125,
+          "nodes": 125,
+          "counts": {
+            "aabb": 51,
+            "coplanar": 74,
+            "hull": 0
+          },
+          "elapsedMs": 2
+        },
+        "full": {
+          "safe": 125,
+          "unsafeSafe": 0,
+          "negativeCertified": 125,
+          "nodes": 125,
+          "counts": {
+            "aabb": 51,
+            "coplanar": 74,
+            "hull": 0
+          },
+          "elapsedMs": 1
+        }
+      }
+    },
+    {
+      "path": "erleben-spike-crack/edge-edge/data_0_1.csv",
+      "sha": "fdb9138ac4feb512484ec1583e29f3397131422b",
+      "queries": 125,
+      "colliding": 0,
+      "methods": {
+        "aabb": {
+          "safe": 37,
+          "unsafeSafe": 0,
+          "negativeCertified": 37,
+          "nodes": 2941,
+          "counts": {
+            "aabb": 37,
+            "coplanar": 0,
+            "hull": 0
+          },
+          "elapsedMs": 25
+        },
+        "bernstein": {
+          "safe": 125,
+          "unsafeSafe": 0,
+          "negativeCertified": 125,
+          "nodes": 125,
+          "counts": {
+            "aabb": 37,
+            "coplanar": 88,
+            "hull": 0
+          },
+          "elapsedMs": 2
+        },
+        "full": {
+          "safe": 125,
+          "unsafeSafe": 0,
+          "negativeCertified": 125,
+          "nodes": 125,
+          "counts": {
+            "aabb": 37,
+            "coplanar": 88,
+            "hull": 0
+          },
+          "elapsedMs": 2
+        }
+      }
+    },
+    {
+      "path": "erleben-wedge-crack/edge-edge/data_0_0.csv",
+      "sha": "111ba62fd048396bd50963c4293191dfca8fc23b",
+      "queries": 125,
+      "colliding": 6,
+      "methods": {
+        "aabb": {
+          "safe": 44,
+          "unsafeSafe": 0,
+          "negativeCertified": 44,
+          "nodes": 2839,
+          "counts": {
+            "aabb": 155,
+            "coplanar": 0,
+            "hull": 0
+          },
+          "elapsedMs": 28
+        },
+        "bernstein": {
+          "safe": 117,
+          "unsafeSafe": 0,
+          "negativeCertified": 117,
+          "nodes": 529,
+          "counts": {
+            "aabb": 57,
+            "coplanar": 195,
+            "hull": 0
+          },
+          "elapsedMs": 7
+        },
+        "full": {
+          "safe": 119,
+          "unsafeSafe": 0,
+          "negativeCertified": 119,
+          "nodes": 409,
+          "counts": {
+            "aabb": 40,
+            "coplanar": 164,
+            "hull": 7
+          },
+          "elapsedMs": 104
+        }
+      }
+    },
+    {
+      "path": "erleben-wedge-crack/edge-edge/data_0_1.csv",
+      "sha": "2bb6ea5dc880a6edb0be9095540a3268c8412d11",
+      "queries": 125,
+      "colliding": 0,
+      "methods": {
+        "aabb": {
+          "safe": 55,
+          "unsafeSafe": 0,
+          "negativeCertified": 55,
+          "nodes": 2512,
+          "counts": {
+            "aabb": 196,
+            "coplanar": 0,
+            "hull": 0
+          },
+          "elapsedMs": 23
+        },
+        "bernstein": {
+          "safe": 124,
+          "unsafeSafe": 0,
+          "negativeCertified": 124,
+          "nodes": 224,
+          "counts": {
+            "aabb": 71,
+            "coplanar": 95,
+            "hull": 0
+          },
+          "elapsedMs": 4
+        },
+        "full": {
+          "safe": 125,
+          "unsafeSafe": 0,
+          "negativeCertified": 125,
+          "nodes": 125,
+          "counts": {
+            "aabb": 54,
+            "coplanar": 64,
+            "hull": 7
+          },
+          "elapsedMs": 2
+        }
+      }
+    },
+    {
+      "path": "erleben-sliding-spike/vertex-face/data_0_0.csv",
+      "sha": "0874a360e0406c69d021b08f43ea231be59f41f8",
+      "queries": 125,
+      "colliding": 4,
+      "methods": {
+        "aabb": {
+          "safe": 104,
+          "unsafeSafe": 0,
+          "negativeCertified": 104,
+          "nodes": 953,
+          "counts": {
+            "aabb": 260,
+            "coplanar": 0,
+            "hull": 0
+          },
+          "elapsedMs": 6
+        },
+        "bernstein": {
+          "safe": 115,
+          "unsafeSafe": 0,
+          "negativeCertified": 115,
+          "nodes": 541,
+          "counts": {
+            "aabb": 200,
+            "coplanar": 11,
+            "hull": 0
+          },
+          "elapsedMs": 6
+        },
+        "full": {
+          "safe": 121,
+          "unsafeSafe": 0,
+          "negativeCertified": 121,
+          "nodes": 318,
+          "counts": {
+            "aabb": 169,
+            "coplanar": 11,
+            "hull": 6
+          },
+          "elapsedMs": 22
+        }
+      }
+    },
+    {
+      "path": "erleben-sliding-spike/vertex-face/data_0_1.csv",
+      "sha": "402c986dade431071c7151d5d796acf09d9e883e",
+      "queries": 125,
+      "colliding": 0,
+      "methods": {
+        "aabb": {
+          "safe": 117,
+          "unsafeSafe": 0,
+          "negativeCertified": 117,
+          "nodes": 451,
+          "counts": {
+            "aabb": 180,
+            "coplanar": 0,
+            "hull": 0
+          },
+          "elapsedMs": 3
+        },
+        "bernstein": {
+          "safe": 125,
+          "unsafeSafe": 0,
+          "negativeCertified": 125,
+          "nodes": 125,
+          "counts": {
+            "aabb": 115,
+            "coplanar": 10,
+            "hull": 0
+          },
+          "elapsedMs": 0
+        },
+        "full": {
+          "safe": 125,
+          "unsafeSafe": 0,
+          "negativeCertified": 125,
+          "nodes": 125,
+          "counts": {
+            "aabb": 115,
+            "coplanar": 10,
+            "hull": 0
+          },
+          "elapsedMs": 1
+        }
+      }
+    },
+    {
+      "path": "erleben-sliding-wedge/edge-edge/data_0_0.csv",
+      "sha": "ca3e32a00a5878d7fde5a0ee63841780c582f436",
+      "queries": 125,
+      "colliding": 0,
+      "methods": {
+        "aabb": {
+          "safe": 26,
+          "unsafeSafe": 0,
+          "negativeCertified": 26,
+          "nodes": 3496,
+          "counts": {
+            "aabb": 229,
+            "coplanar": 0,
+            "hull": 0
+          },
+          "elapsedMs": 29
+        },
+        "bernstein": {
+          "safe": 125,
+          "unsafeSafe": 0,
+          "negativeCertified": 125,
+          "nodes": 125,
+          "counts": {
+            "aabb": 26,
+            "coplanar": 99,
+            "hull": 0
+          },
+          "elapsedMs": 1
+        },
+        "full": {
+          "safe": 125,
+          "unsafeSafe": 0,
+          "negativeCertified": 125,
+          "nodes": 125,
+          "counts": {
+            "aabb": 26,
+            "coplanar": 99,
+            "hull": 0
+          },
+          "elapsedMs": 2
+        }
+      }
+    },
+    {
+      "path": "erleben-sliding-wedge/edge-edge/data_0_1.csv",
+      "sha": "f15033ac6e932ec474d076f9f3702b2cc4034a62",
+      "queries": 125,
+      "colliding": 0,
+      "methods": {
+        "aabb": {
+          "safe": 8,
+          "unsafeSafe": 0,
+          "negativeCertified": 8,
+          "nodes": 3869,
+          "counts": {
+            "aabb": 8,
+            "coplanar": 0,
+            "hull": 0
+          },
+          "elapsedMs": 27
+        },
+        "bernstein": {
+          "safe": 125,
+          "unsafeSafe": 0,
+          "negativeCertified": 125,
+          "nodes": 125,
+          "counts": {
+            "aabb": 8,
+            "coplanar": 117,
+            "hull": 0
+          },
+          "elapsedMs": 1
+        },
+        "full": {
+          "safe": 125,
+          "unsafeSafe": 0,
+          "negativeCertified": 125,
+          "nodes": 125,
+          "counts": {
+            "aabb": 8,
+            "coplanar": 117,
+            "hull": 0
+          },
+          "elapsedMs": 2
+        }
+      }
+    }
+  ]
+}
