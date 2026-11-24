@@ -1,0 +1,49 @@
+{
+  "scope": "Full two previously unread vertex-face CSV files, blob lengths verified, unchanged solver/checker, no ground-truth labels used in certificates; aggregate Date.now timings only; per-query status reproducible via heldout_certificate_audit.cjs.",
+  "rows": [
+    {
+      "path": "golf-ball/vertex-face/data_0_0.csv",
+      "sha": "51f1d6df7ccd03ee6d50a5b434ffa7e5ec08f367",
+      "range": "full file",
+      "queries": 12500,
+      "colliding": 104,
+      "SAFE": 12396,
+      "COLLISION": 104,
+      "UNKNOWN": 0,
+      "wrong": 0,
+      "rejected": 0,
+      "algebraic": 0,
+      "leaves": 12396,
+      "nodes": 12500,
+      "proofBytes": 1163572,
+      "maxProofBytes": 249,
+      "produceMs": 103,
+      "verifyMs": 203,
+      "tamperAttempts": 12500,
+      "tamperAccepted": 0,
+      "unknown": []
+    },
+    {
+      "path": "mat-twist/vertex-face/data_0_1.csv",
+      "sha": "5f20d6a3194868517515d3e5350d34d1ff077d4c",
+      "range": "full file",
+      "queries": 12500,
+      "colliding": 0,
+      "SAFE": 12500,
+      "COLLISION": 0,
+      "UNKNOWN": 0,
+      "wrong": 0,
+      "rejected": 0,
+      "algebraic": 0,
+      "leaves": 12500,
+      "nodes": 12500,
+      "proofBytes": 1097519,
+      "maxProofBytes": 239,
+      "produceMs": 200,
+      "verifyMs": 395,
+      "tamperAttempts": 12500,
+      "tamperAccepted": 0,
+      "unknown": []
+    }
+  ]
+}
