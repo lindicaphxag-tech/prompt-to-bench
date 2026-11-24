@@ -19,6 +19,8 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y openscad libgl1 libglu1-mesa
           python -m pip install -r requirements.txt
+      - name: Check-instance identity regressions
+        run: python -m unittest discover -s bench -p test_check_identity.py
       - name: Confirm new task manifest and exact reference
         run: |
           python - <<'PY'
