@@ -1,0 +1,574 @@
+{
+  "source": "https://github.com/Continuous-Collision-Detection/Sample-Queries",
+  "scope": "Exploratory algorithm evaluated on the previously examined 13 public files, not held-out. Same node budget 255, max depth 32. Baselines now continue after unresolved depth leaves, unlike prior early return.",
+  "totals": {
+    "bernstein": {
+      "SAFE": 1721,
+      "COLLISION": 0,
+      "UNKNOWN": 188,
+      "falseSafe": 0,
+      "falseCollision": 0,
+      "nodes": 17667,
+      "positiveTests": 0,
+      "hullTests": 0,
+      "elapsedMs": 212
+    },
+    "full": {
+      "SAFE": 1730,
+      "COLLISION": 0,
+      "UNKNOWN": 179,
+      "falseSafe": 0,
+      "falseCollision": 0,
+      "nodes": 16409,
+      "positiveTests": 0,
+      "hullTests": 8129,
+      "elapsedMs": 2015
+    },
+    "two_sided": {
+      "SAFE": 1730,
+      "COLLISION": 179,
+      "UNKNOWN": 0,
+      "falseSafe": 0,
+      "falseCollision": 0,
+      "nodes": 2274,
+      "positiveTests": 554,
+      "hullTests": 199,
+      "elapsedMs": 59
+    }
+  },
+  "results": [
+    {
+      "path": "unit-tests/edge-edge/data_0_0.csv",
+      "sha": "412907d605556dcdc35778cc06dacae649e7dabc",
+      "queries": 54,
+      "colliding": 21,
+      "methods": {
+        "bernstein": {
+          "SAFE": 33,
+          "COLLISION": 0,
+          "UNKNOWN": 21,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 1832,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 23
+        },
+        "full": {
+          "SAFE": 33,
+          "COLLISION": 0,
+          "UNKNOWN": 21,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 1832,
+          "positiveTests": 0,
+          "hullTests": 917,
+          "elapsedMs": 320
+        },
+        "two_sided": {
+          "SAFE": 33,
+          "COLLISION": 21,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 54,
+          "positiveTests": 21,
+          "hullTests": 0,
+          "elapsedMs": 2
+        }
+      }
+    },
+    {
+      "path": "unit-tests/edge-edge/data_0_1.csv",
+      "sha": "1d9e2dc829f456a60af3dce9c08f211ef0b46c89",
+      "queries": 20,
+      "colliding": 15,
+      "methods": {
+        "bernstein": {
+          "SAFE": 5,
+          "COLLISION": 0,
+          "UNKNOWN": 15,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 3012,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 48
+        },
+        "full": {
+          "SAFE": 5,
+          "COLLISION": 0,
+          "UNKNOWN": 15,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 2846,
+          "positiveTests": 0,
+          "hullTests": 2082,
+          "elapsedMs": 742
+        },
+        "two_sided": {
+          "SAFE": 5,
+          "COLLISION": 15,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 385,
+          "positiveTests": 363,
+          "hullTests": 172,
+          "elapsedMs": 28
+        }
+      }
+    },
+    {
+      "path": "unit-tests/vertex-face/data_0_0.csv",
+      "sha": "515ccd220f6fe03a124850fc4a1bd1f5e7db1aae",
+      "queries": 125,
+      "colliding": 35,
+      "methods": {
+        "bernstein": {
+          "SAFE": 90,
+          "COLLISION": 0,
+          "UNKNOWN": 35,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 2737,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 24
+        },
+        "full": {
+          "SAFE": 90,
+          "COLLISION": 0,
+          "UNKNOWN": 35,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 2737,
+          "positiveTests": 0,
+          "hullTests": 1347,
+          "elapsedMs": 229
+        },
+        "two_sided": {
+          "SAFE": 90,
+          "COLLISION": 35,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 125,
+          "positiveTests": 35,
+          "hullTests": 0,
+          "elapsedMs": 3
+        }
+      }
+    },
+    {
+      "path": "unit-tests/vertex-face/data_0_1.csv",
+      "sha": "a2532832b8ceeda1e6d7aad1222dd948ad9a7ba3",
+      "queries": 125,
+      "colliding": 89,
+      "methods": {
+        "bernstein": {
+          "SAFE": 36,
+          "COLLISION": 0,
+          "UNKNOWN": 89,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 6193,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 56
+        },
+        "full": {
+          "SAFE": 36,
+          "COLLISION": 0,
+          "UNKNOWN": 89,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 6193,
+          "positiveTests": 0,
+          "hullTests": 3129,
+          "elapsedMs": 507
+        },
+        "two_sided": {
+          "SAFE": 36,
+          "COLLISION": 89,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 125,
+          "positiveTests": 89,
+          "hullTests": 0,
+          "elapsedMs": 3
+        }
+      }
+    },
+    {
+      "path": "erleben-spike-hole/vertex-face/data_0_0.csv",
+      "sha": "a156c48da020c9b47a0b7a293157f0bfac24d688",
+      "queries": 585,
+      "colliding": 9,
+      "methods": {
+        "bernstein": {
+          "SAFE": 576,
+          "COLLISION": 0,
+          "UNKNOWN": 9,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 1221,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 20
+        },
+        "full": {
+          "SAFE": 576,
+          "COLLISION": 0,
+          "UNKNOWN": 9,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 1161,
+          "positiveTests": 0,
+          "hullTests": 304,
+          "elapsedMs": 83
+        },
+        "two_sided": {
+          "SAFE": 576,
+          "COLLISION": 9,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 585,
+          "positiveTests": 16,
+          "hullTests": 7,
+          "elapsedMs": 7
+        }
+      }
+    },
+    {
+      "path": "erleben-spike-crack/edge-edge/data_0_0.csv",
+      "sha": "025f00455d9bfbfd81229c1ae34f38bd3d811c59",
+      "queries": 125,
+      "colliding": 0,
+      "methods": {
+        "bernstein": {
+          "SAFE": 125,
+          "COLLISION": 0,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 125,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 2
+        },
+        "full": {
+          "SAFE": 125,
+          "COLLISION": 0,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 125,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 2
+        },
+        "two_sided": {
+          "SAFE": 125,
+          "COLLISION": 0,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 125,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 2
+        }
+      }
+    },
+    {
+      "path": "erleben-spike-crack/edge-edge/data_0_1.csv",
+      "sha": "fdb9138ac4feb512484ec1583e29f3397131422b",
+      "queries": 125,
+      "colliding": 0,
+      "methods": {
+        "bernstein": {
+          "SAFE": 125,
+          "COLLISION": 0,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 125,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 2
+        },
+        "full": {
+          "SAFE": 125,
+          "COLLISION": 0,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 125,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 2
+        },
+        "two_sided": {
+          "SAFE": 125,
+          "COLLISION": 0,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 125,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 2
+        }
+      }
+    },
+    {
+      "path": "erleben-wedge-crack/edge-edge/data_0_0.csv",
+      "sha": "111ba62fd048396bd50963c4293191dfca8fc23b",
+      "queries": 125,
+      "colliding": 6,
+      "methods": {
+        "bernstein": {
+          "SAFE": 117,
+          "COLLISION": 0,
+          "UNKNOWN": 8,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 663,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 16
+        },
+        "full": {
+          "SAFE": 119,
+          "COLLISION": 0,
+          "UNKNOWN": 6,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 509,
+          "positiveTests": 0,
+          "hullTests": 205,
+          "elapsedMs": 101
+        },
+        "two_sided": {
+          "SAFE": 119,
+          "COLLISION": 6,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 125,
+          "positiveTests": 13,
+          "hullTests": 7,
+          "elapsedMs": 3
+        }
+      }
+    },
+    {
+      "path": "erleben-wedge-crack/edge-edge/data_0_1.csv",
+      "sha": "2bb6ea5dc880a6edb0be9095540a3268c8412d11",
+      "queries": 125,
+      "colliding": 0,
+      "methods": {
+        "bernstein": {
+          "SAFE": 124,
+          "COLLISION": 0,
+          "UNKNOWN": 1,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 239,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 3
+        },
+        "full": {
+          "SAFE": 125,
+          "COLLISION": 0,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 125,
+          "positiveTests": 0,
+          "hullTests": 7,
+          "elapsedMs": 3
+        },
+        "two_sided": {
+          "SAFE": 125,
+          "COLLISION": 0,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 125,
+          "positiveTests": 7,
+          "hullTests": 7,
+          "elapsedMs": 3
+        }
+      }
+    },
+    {
+      "path": "erleben-sliding-spike/vertex-face/data_0_0.csv",
+      "sha": "0874a360e0406c69d021b08f43ea231be59f41f8",
+      "queries": 125,
+      "colliding": 4,
+      "methods": {
+        "bernstein": {
+          "SAFE": 115,
+          "COLLISION": 0,
+          "UNKNOWN": 10,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 1145,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 14
+        },
+        "full": {
+          "SAFE": 121,
+          "COLLISION": 0,
+          "UNKNOWN": 4,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 381,
+          "positiveTests": 0,
+          "hullTests": 138,
+          "elapsedMs": 22
+        },
+        "two_sided": {
+          "SAFE": 121,
+          "COLLISION": 4,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 125,
+          "positiveTests": 10,
+          "hullTests": 6,
+          "elapsedMs": 1
+        }
+      }
+    },
+    {
+      "path": "erleben-sliding-spike/vertex-face/data_0_1.csv",
+      "sha": "402c986dade431071c7151d5d796acf09d9e883e",
+      "queries": 125,
+      "colliding": 0,
+      "methods": {
+        "bernstein": {
+          "SAFE": 125,
+          "COLLISION": 0,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 125,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 1
+        },
+        "full": {
+          "SAFE": 125,
+          "COLLISION": 0,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 125,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 1
+        },
+        "two_sided": {
+          "SAFE": 125,
+          "COLLISION": 0,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 125,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 1
+        }
+      }
+    },
+    {
+      "path": "erleben-sliding-wedge/edge-edge/data_0_0.csv",
+      "sha": "ca3e32a00a5878d7fde5a0ee63841780c582f436",
+      "queries": 125,
+      "colliding": 0,
+      "methods": {
+        "bernstein": {
+          "SAFE": 125,
+          "COLLISION": 0,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 125,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 1
+        },
+        "full": {
+          "SAFE": 125,
+          "COLLISION": 0,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 125,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 1
+        },
+        "two_sided": {
+          "SAFE": 125,
+          "COLLISION": 0,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 125,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 2
+        }
+      }
+    },
+    {
+      "path": "erleben-sliding-wedge/edge-edge/data_0_1.csv",
+      "sha": "f15033ac6e932ec474d076f9f3702b2cc4034a62",
+      "queries": 125,
+      "colliding": 0,
+      "methods": {
+        "bernstein": {
+          "SAFE": 125,
+          "COLLISION": 0,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 125,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 2
+        },
+        "full": {
+          "SAFE": 125,
+          "COLLISION": 0,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 125,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 2
+        },
+        "two_sided": {
+          "SAFE": 125,
+          "COLLISION": 0,
+          "UNKNOWN": 0,
+          "falseSafe": 0,
+          "falseCollision": 0,
+          "nodes": 125,
+          "positiveTests": 0,
+          "hullTests": 0,
+          "elapsedMs": 2
+        }
+      }
+    }
+  ]
+}
