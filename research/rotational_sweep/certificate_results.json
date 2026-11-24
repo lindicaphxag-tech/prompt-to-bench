@@ -1,0 +1,102 @@
+{
+  "source": "https://github.com/Continuous-Collision-Detection/Sample-Queries",
+  "scope": "Frozen 16 source blobs; exact dyadic certificates; tangencies and exhausted budgets may remain UNKNOWN; one malformed-certificate attack per certified query.",
+  "producer_commit": "41c30c996dbe574cced15a748db57fc727a64e4e",
+  "verifier_commit": "0b8f301ac51ab79513f14c7086debfb21344fda9",
+  "totals": {
+    "SAFE": 1860,
+    "COLLISION": 119,
+    "UNKNOWN": 21,
+    "falseSafe": 0,
+    "falseCollision": 0,
+    "rejected": 0,
+    "nodes": 3970,
+    "leaves": 1870,
+    "brackets": 118,
+    "endpoints": 1,
+    "tamperAttempts": 1979,
+    "tamperAccepted": 0
+  },
+  "inputs": [
+    {
+      "path": "erleben-cube-cliff-edges/vertex-face/data_0_0.csv",
+      "sha": "bf5e3a8361eeae6a43e5efb2ecc4108883ca16ec",
+      "queries": 125
+    },
+    {
+      "path": "erleben-cube-cliff-edges/vertex-face/data_0_1.csv",
+      "sha": "7989cf5c60372640005bf7ed1f02a8976a57f916",
+      "queries": 125
+    },
+    {
+      "path": "erleben-cube-internal-edges/edge-edge/data_0_0.csv",
+      "sha": "146867d45fe1325a9c276636a66db91f5b71014f",
+      "queries": 125
+    },
+    {
+      "path": "erleben-cube-internal-edges/edge-edge/data_0_1.csv",
+      "sha": "4afded85f14abb089146bab8fc035e9c922e3907",
+      "queries": 125
+    },
+    {
+      "path": "erleben-spikes/edge-edge/data_0_0.csv",
+      "sha": "b325621989c8b631b2fd727cdda79e4ed4f3cffe",
+      "queries": 125
+    },
+    {
+      "path": "erleben-spikes/edge-edge/data_0_1.csv",
+      "sha": "a18ab6004e0e2b4836d2bce71dbf6ddfb133ea96",
+      "queries": 125
+    },
+    {
+      "path": "erleben-wedges/vertex-face/data_0_0.csv",
+      "sha": "e307552131de888dad9b1f8da28c017574c9c2c8",
+      "queries": 125
+    },
+    {
+      "path": "erleben-wedges/vertex-face/data_0_1.csv",
+      "sha": "f2c0c6b177bf59081a6aaff60b52ea4559f52443",
+      "queries": 125
+    },
+    {
+      "path": "erleben-spike-wedge/edge-edge/data_0_0.csv",
+      "sha": "d693588dae85bf84b6bfab02b5e1fee09309ddfb",
+      "queries": 125
+    },
+    {
+      "path": "erleben-spike-wedge/edge-edge/data_0_1.csv",
+      "sha": "53302c01e021137b296cd3de5fb530dc50553176",
+      "queries": 125
+    },
+    {
+      "path": "erleben-sliding-spike/edge-edge/data_0_0.csv",
+      "sha": "796c857d90ebdeecc205610d9c56324647a0ac3b",
+      "queries": 125
+    },
+    {
+      "path": "erleben-sliding-spike/edge-edge/data_0_1.csv",
+      "sha": "585a86f8c281cf00345bd9a6c7073ddc39df2bbb",
+      "queries": 125
+    },
+    {
+      "path": "erleben-spike-crack/vertex-face/data_0_0.csv",
+      "sha": "88c355ae6cde2fc369aee7f8ee034e85990fa71c",
+      "queries": 125
+    },
+    {
+      "path": "erleben-spike-crack/vertex-face/data_0_1.csv",
+      "sha": "be586c9db48a8df213aa23728e93a5a75b0b5a66",
+      "queries": 125
+    },
+    {
+      "path": "erleben-wedge-crack/vertex-face/data_0_0.csv",
+      "sha": "88007a69154d574365e039db4cfd1640842d26e4",
+      "queries": 125
+    },
+    {
+      "path": "erleben-wedge-crack/vertex-face/data_0_1.csv",
+      "sha": "e6a315a1984f2d944d5bfd81d9f01141be551bc1",
+      "queries": 125
+    }
+  ]
+}
