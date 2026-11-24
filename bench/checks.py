@@ -368,30 +368,30 @@ def evaluate(mesh_or_path, task, ref):
     }
     items = build_items(task, ref)
     fixed = {}
-    for name, f, dep in items:
+    for idx, (name, f, dep) in enumerate(items):
         if not dep:
             try:
-                fixed[name] = f(ctx, 0, False)
+                fixed[idx] = f(ctx, 0, False)
             except Exception as e:  # noqa: BLE001
-                fixed[name] = (False, f"error: {e}")
+                fixed[idx] = (False, f"error: {e}")
     step = task.get("rotation_step")
     transforms = [(a, m) for m in (False, True) for a in np.arange(0, 360, step)] if step else TRANSFORMS
     best = None
     for k, mir in transforms:
         res = {}
-        for name, f, dep in items:
+        for idx, (name, f, dep) in enumerate(items):
             if dep:
                 try:
-                    res[name] = f(ctx, k, mir)
+                    res[idx] = f(ctx, k, mir)
                 except Exception as e:  # noqa: BLE001
-                    res[name] = (False, f"error: {e}")
+                    res[idx] = (False, f"error: {e}")
         score = sum(ok for ok, _ in res.values())
         if best is None or score > best[0]:
             best = (score, (k, mir), res)
         if score == len(res):
             break
     allres = {**fixed, **best[2]}
-    out = [{"check": n, "ok": bool(allres[n][0]), "msg": allres[n][1]} for n, _, _ in items]
+    out = [{"check": n, "ok": bool(allres[idx][0]), "msg": allres[idx][1]} for idx, (n, _, _) in enumerate(items)]
     n_ok = sum(i["ok"] for i in out)
     return {"passed": n_ok == len(out), "score": n_ok / len(out), "n_ok": n_ok, "n": len(out),
             "transform": {"rot_deg": float(best[1][0]), "mirror": best[1][1]}, "items": out}
