@@ -494,7 +494,7 @@
     # Check a tolerance-eroded clearance region over the full assessed slab,
     # not just five center lines. The disc footprints are inscribed polygons.
     - prism_clearance:
-        z: [0.15, 5.85]
+        z: [0.01, 5.99]
         rectangles: [{center: [0, 0], size: [59.4, 29.4]}]
         discs:
           - {center: [-40, -25], radius: 2.2}

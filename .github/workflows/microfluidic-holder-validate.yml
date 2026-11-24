@@ -32,6 +32,8 @@ jobs:
           assert [t['id'] for t in tasks].count('microfluidic_chip_imaging_holder')==1
           assert 'microfluidic_chip_imaging_holder' in json.loads(Path('bench/reference_stats.json').read_text())
           PY
+      - name: End-to-end old versus new aperture validation
+        run: python bench/microfluidic_clearance_e2e.py
       - name: Reference self-test, mutants, cross-task, and frozen statistics
         run: |
           mkdir -p validation-logs
