@@ -1,0 +1,228 @@
+{
+  "source": "https://github.com/Continuous-Collision-Detection/Sample-Queries",
+  "scope": "Exact rational noncollision certification for linear trajectories only; unknown includes collisions; no Tight-Inclusion executable comparison.",
+  "budget": 255,
+  "maxDepth": 32,
+  "results": [
+    {
+      "path": "unit-tests/edge-edge/data_0_0.csv",
+      "sha": "412907d605556dcdc35778cc06dacae649e7dabc",
+      "queries": 54,
+      "colliding": 21,
+      "methods": {
+        "aabb": {
+          "safe": 33,
+          "unsafeSafe": 0,
+          "negativeCertified": 33,
+          "nodes": 1328,
+          "counts": {
+            "aabb": 635,
+            "coplanar": 0,
+            "hull": 0
+          },
+          "elapsedMs": 11
+        },
+        "bernstein": {
+          "safe": 33,
+          "unsafeSafe": 0,
+          "negativeCertified": 33,
+          "nodes": 1328,
+          "counts": {
+            "aabb": 635,
+            "coplanar": 0,
+            "hull": 0
+          },
+          "elapsedMs": 18
+        },
+        "full": {
+          "safe": 33,
+          "unsafeSafe": 0,
+          "negativeCertified": 33,
+          "nodes": 1328,
+          "counts": {
+            "aabb": 635,
+            "coplanar": 0,
+            "hull": 0
+          },
+          "elapsedMs": 232
+        }
+      }
+    },
+    {
+      "path": "unit-tests/edge-edge/data_0_1.csv",
+      "sha": "1d9e2dc829f456a60af3dce9c08f211ef0b46c89",
+      "queries": 20,
+      "colliding": 15,
+      "methods": {
+        "aabb": {
+          "safe": 5,
+          "unsafeSafe": 0,
+          "negativeCertified": 5,
+          "nodes": 545,
+          "counts": {
+            "aabb": 50,
+            "coplanar": 0,
+            "hull": 0
+          },
+          "elapsedMs": 4
+        },
+        "bernstein": {
+          "safe": 5,
+          "unsafeSafe": 0,
+          "negativeCertified": 5,
+          "nodes": 676,
+          "counts": {
+            "aabb": 25,
+            "coplanar": 155,
+            "hull": 0
+          },
+          "elapsedMs": 11
+        },
+        "full": {
+          "safe": 5,
+          "unsafeSafe": 0,
+          "negativeCertified": 5,
+          "nodes": 695,
+          "counts": {
+            "aabb": 9,
+            "coplanar": 154,
+            "hull": 37
+          },
+          "elapsedMs": 187
+        }
+      }
+    },
+    {
+      "path": "unit-tests/vertex-face/data_0_0.csv",
+      "sha": "515ccd220f6fe03a124850fc4a1bd1f5e7db1aae",
+      "queries": 125,
+      "colliding": 35,
+      "methods": {
+        "aabb": {
+          "safe": 90,
+          "unsafeSafe": 0,
+          "negativeCertified": 90,
+          "nodes": 2189,
+          "counts": {
+            "aabb": 1034,
+            "coplanar": 0,
+            "hull": 0
+          },
+          "elapsedMs": 15
+        },
+        "bernstein": {
+          "safe": 90,
+          "unsafeSafe": 0,
+          "negativeCertified": 90,
+          "nodes": 2189,
+          "counts": {
+            "aabb": 1034,
+            "coplanar": 0,
+            "hull": 0
+          },
+          "elapsedMs": 16
+        },
+        "full": {
+          "safe": 90,
+          "unsafeSafe": 0,
+          "negativeCertified": 90,
+          "nodes": 2189,
+          "counts": {
+            "aabb": 1034,
+            "coplanar": 0,
+            "hull": 0
+          },
+          "elapsedMs": 157
+        }
+      }
+    },
+    {
+      "path": "unit-tests/vertex-face/data_0_1.csv",
+      "sha": "a2532832b8ceeda1e6d7aad1222dd948ad9a7ba3",
+      "queries": 125,
+      "colliding": 89,
+      "methods": {
+        "aabb": {
+          "safe": 36,
+          "unsafeSafe": 0,
+          "negativeCertified": 36,
+          "nodes": 4901,
+          "counts": {
+            "aabb": 1964,
+            "coplanar": 0,
+            "hull": 0
+          },
+          "elapsedMs": 25
+        },
+        "bernstein": {
+          "safe": 36,
+          "unsafeSafe": 0,
+          "negativeCertified": 36,
+          "nodes": 4901,
+          "counts": {
+            "aabb": 1964,
+            "coplanar": 0,
+            "hull": 0
+          },
+          "elapsedMs": 44
+        },
+        "full": {
+          "safe": 36,
+          "unsafeSafe": 0,
+          "negativeCertified": 36,
+          "nodes": 4901,
+          "counts": {
+            "aabb": 1964,
+            "coplanar": 0,
+            "hull": 0
+          },
+          "elapsedMs": 453
+        }
+      }
+    },
+    {
+      "path": "erleben-spike-hole/vertex-face/data_0_0.csv",
+      "sha": "a156c48da020c9b47a0b7a293157f0bfac24d688",
+      "queries": 585,
+      "colliding": 9,
+      "methods": {
+        "aabb": {
+          "safe": 389,
+          "unsafeSafe": 0,
+          "negativeCertified": 389,
+          "nodes": 6967,
+          "counts": {
+            "aabb": 469,
+            "coplanar": 0,
+            "hull": 0
+          },
+          "elapsedMs": 52
+        },
+        "bernstein": {
+          "safe": 576,
+          "unsafeSafe": 0,
+          "negativeCertified": 576,
+          "nodes": 1082,
+          "counts": {
+            "aabb": 448,
+            "coplanar": 307,
+            "hull": 0
+          },
+          "elapsedMs": 15
+        },
+        "full": {
+          "safe": 576,
+          "unsafeSafe": 0,
+          "negativeCertified": 576,
+          "nodes": 1022,
+          "counts": {
+            "aabb": 411,
+            "coplanar": 307,
+            "hull": 7
+          },
+          "elapsedMs": 56
+        }
+      }
+    }
+  ]
+}
