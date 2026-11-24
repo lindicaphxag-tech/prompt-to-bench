@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Iterable
 from .paired_inference import analyze_paired
 from .run_provenance import audit_protocols
+from .attempt_audit import audit_attempts
 
 FROZEN = ('models', 'samples', 'feedback', 'max_repairs', 'temperature',
           'seed_base', 'num_ctx', 'num_predict', 'think', 'system')
@@ -73,6 +74,7 @@ def _records(path, lang, model):
             raise ValueError('invalid repair budget')
         if len(attempts) > 1 + row['max_repairs']:
             raise ValueError('attempts exceed allowed repair budget')
+        audit_attempts(attempts)
         result[key] = row
     return result
 
