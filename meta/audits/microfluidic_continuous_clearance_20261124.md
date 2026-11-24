@@ -1,0 +1,8 @@
+# Continuous clearance validation (AI-assisted, 2026-11-24)
+
+Correction to earlier experimental evaluator-hardening commits: the existing build_items already numbers repeated display labels. The isolated mock-predicate tests bypassed that protection, so they do NOT establish an actual duplicate-label false pass in the normal upstream pipeline. This commit removes that unrelated change and its tests.
+
+The new prism_clearance gate addresses a different, geometric limitation. A center ray and a mid-height slice cannot establish clearance of an aperture's full cross-section. For a valid embedded closed oriented surface, clipping each triangle to the assessed Z slab and testing its XY projection against a convex footprint detects boundary intersection; if none occurs, one interior winding-number test distinguishes an empty prism from one entirely occupied by material. This is a floating-point algorithm, not exact arithmetic or self-intersection certification. The footprints are deliberately tolerance-eroded (59.4 x 29.4 mm, inscribed radius-2.2 mm polygons), and the slab is z=0.15..5.85 mm, so this gate does not claim exact full-dimensional or full-height clearance.
+
+Local independent OpenSCAD/trimesh validation on six rendered specimens: normal reference and an outer perturbation accepted; four off-axis web / intrusion / local-ring defects rejected. All six had clear offset center rays, five holes at z=3, one connected watertight body. Nine kernel tests passed. These are independent geometric checks, not a completed upstream full-suite run. No physical print, mechanical fit or manuscript acceptance claimed. The new mutant below exercises the full upstream scorer when CI runs.
+

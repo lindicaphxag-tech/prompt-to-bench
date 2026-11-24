@@ -12,7 +12,7 @@ Check types (see tasks.yaml):
   bbox, bodies, body_sizes, watertight, volume,
   slice (islands, holes, hole_d, hole_area, hole_rect, hole_rects, hole_centers,
          hole_grid, island_d, island_rects, material_area),
-  probes, line, arc, bores
+  probes, line, arc, bores, prism_clearance
 """
 import collections
 import math
@@ -280,6 +280,33 @@ def build_items(task, ref):
                     else f"{len(at)} open from z={z0} to {z1}"
             items.append((f"bores z={z0}-{z1}", f, True))
 
+        elif kind == "prism_clearance":
+            from clearance import clearance
+            from shapely.geometry import Point, Polygon, box
+            z0, z1 = spec["z"]
+            polygons = []
+            for r in spec.get("rectangles", []):
+                x, y = r["center"]
+                w, h = r["size"]
+                if w <= 0 or h <= 0:
+                    raise ValueError("invalid clearance rectangle")
+                polygons.append(box(x-w/2, y-h/2, x+w/2, y+h/2))
+            for d in spec.get("discs", []):
+                if d["radius"] <= 0:
+                    raise ValueError("invalid clearance radius")
+                polygons.append(Point(*d["center"]).buffer(d["radius"], quad_segs=32))
+            if not polygons:
+                raise ValueError("prism_clearance needs a footprint")
+
+            def f(ctx, k, m, z0=z0, z1=z1, polygons=polygons):
+                for i, p in enumerate(polygons):
+                    q = Polygon(to_model(np.asarray(p.exterior.coords), k, m, dc))
+                    ok, reason = clearance(ctx["mesh"], q, z0, z1)
+                    if not ok:
+                        return False, f"prism {i+1}: {reason}"
+                return True, f"{len(polygons)} clear prisms over z={z0}..{z1}"
+            items.append((f"prism_clearance z={z0}-{z1}", f, True))
+
         elif kind == "line":
             z, a, b = spec["z"], spec["from"], spec["to"]
             n_exp, (L, ltol) = spec["intervals"], spec.get("length", [None, None])
@@ -368,30 +395,30 @@ def evaluate(mesh_or_path, task, ref):
     }
     items = build_items(task, ref)
     fixed = {}
-    for idx, (name, f, dep) in enumerate(items):
+    for name, f, dep in items:
         if not dep:
             try:
-                fixed[idx] = f(ctx, 0, False)
+                fixed[name] = f(ctx, 0, False)
             except Exception as e:  # noqa: BLE001
-                fixed[idx] = (False, f"error: {e}")
+                fixed[name] = (False, f"error: {e}")
     step = task.get("rotation_step")
     transforms = [(a, m) for m in (False, True) for a in np.arange(0, 360, step)] if step else TRANSFORMS
     best = None
     for k, mir in transforms:
         res = {}
-        for idx, (name, f, dep) in enumerate(items):
+        for name, f, dep in items:
             if dep:
                 try:
-                    res[idx] = f(ctx, k, mir)
+                    res[name] = f(ctx, k, mir)
                 except Exception as e:  # noqa: BLE001
-                    res[idx] = (False, f"error: {e}")
+                    res[name] = (False, f"error: {e}")
         score = sum(ok for ok, _ in res.values())
         if best is None or score > best[0]:
             best = (score, (k, mir), res)
         if score == len(res):
             break
     allres = {**fixed, **best[2]}
-    out = [{"check": n, "ok": bool(allres[idx][0]), "msg": allres[idx][1]} for idx, (n, _, _) in enumerate(items)]
+    out = [{"check": n, "ok": bool(allres[n][0]), "msg": allres[n][1]} for n, _, _ in items]
     n_ok = sum(i["ok"] for i in out)
     return {"passed": n_ok == len(out), "score": n_ok / len(out), "n_ok": n_ok, "n": len(out),
             "transform": {"rot_deg": float(best[1][0]), "mirror": best[1][1]}, "items": out}

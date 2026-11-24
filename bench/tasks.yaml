@@ -491,6 +491,16 @@
     - slice: {z: 3, islands: 1, holes: 5}
     # Five holes at z=3 do not establish through-open apertures.
     - bores: {z: [0.15, 5.85], at: [[0, 0], [-40, -25], [-40, 25], [40, -25], [40, 25]]}
+    # Check a tolerance-eroded clearance region over the full assessed slab,
+    # not just five center lines. The disc footprints are inscribed polygons.
+    - prism_clearance:
+        z: [0.15, 5.85]
+        rectangles: [{center: [0, 0], size: [59.4, 29.4]}]
+        discs:
+          - {center: [-40, -25], radius: 2.2}
+          - {center: [-40, 25], radius: 2.2}
+          - {center: [40, -25], radius: 2.2}
+          - {center: [40, 25], radius: 2.2}
     # Distinguish the 60 x 30 mm optical aperture and 5 mm bores from
     # larger, still watertight openings hidden by the 4% volume tolerance.
     - line: {z: 3, from: [-36, 0], to: [36, 0], intervals: 2, length: [6, 0.35]}
