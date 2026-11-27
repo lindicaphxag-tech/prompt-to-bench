@@ -15,6 +15,73 @@ def clip(poly, z, above):
     return np.asarray(out).reshape(-1,3)
 
 
+
+def _triangles_overlap(a, b, tol):
+    """Conservative SAT overlap test for two closed 3-D triangles.
+
+    Includes in-plane edge normals so coplanar triangles are handled too.
+    Contact within tol is treated as overlap (fail closed).
+    """
+    ea = np.roll(a, -1, axis=0) - a
+    eb = np.roll(b, -1, axis=0) - b
+    na = np.cross(ea[0], ea[1])
+    nb = np.cross(eb[0], eb[1])
+    axes = [na, nb]
+    axes.extend(np.cross(x, y) for x in ea for y in eb)
+    axes.extend(np.cross(na, x) for x in ea)
+    axes.extend(np.cross(nb, y) for y in eb)
+    for axis in axes:
+        norm = np.linalg.norm(axis)
+        if norm <= 1e-14:
+            continue
+        axis = axis / norm
+        pa, pb = a @ axis, b @ axis
+        if pa.max() < pb.min() - tol or pb.max() < pa.min() - tol:
+            return False
+    return True
+
+
+def _components_intersect(mesh):
+    """Detect intersections between disconnected closed surface components.
+
+    A global signed-winding sum can cancel for two overlapping components
+    with opposite orientation, falsely certifying an occupied prism as empty.
+    Components are broad-phased by triangle AABBs and narrow-phased by SAT.
+    Nested, nonintersecting shells remain valid (their signed winding encodes
+    cavities). Self-intersection within one connected component remains an
+    explicit precondition/limitation of this floating-point checker.
+    """
+    parts = mesh.split(only_watertight=False)
+    if len(parts) < 2:
+        return False
+    tol = max(1.0, float(mesh.scale)) * 1e-9
+    bounds = []
+    triangles = []
+    for part in parts:
+        tri = np.asarray(part.triangles, dtype=float)
+        triangles.append(tri)
+        bounds.append((tri.min(axis=1) - tol, tri.max(axis=1) + tol))
+    for i in range(len(parts)):
+        ta, (alo, ahi) = triangles[i], bounds[i]
+        for j in range(i + 1, len(parts)):
+            tb, (blo, bhi) = triangles[j], bounds[j]
+            order = np.argsort(blo[:, 0])
+            sorted_min_x = blo[order, 0]
+            for k, tri_a in enumerate(ta):
+                end = np.searchsorted(sorted_min_x, ahi[k, 0], side='right')
+                candidates = order[:end]
+                if not len(candidates):
+                    continue
+                mask = ((bhi[candidates, 0] >= alo[k, 0]) &
+                        (bhi[candidates, 1] >= alo[k, 1]) &
+                        (blo[candidates, 1] <= ahi[k, 1]) &
+                        (bhi[candidates, 2] >= alo[k, 2]) &
+                        (blo[candidates, 2] <= ahi[k, 2]))
+                for q in candidates[mask]:
+                    if _triangles_overlap(tri_a, tb[q], tol):
+                        return True
+    return False
+
 def clearance(mesh, footprint, z0, z1):
     """Return (clear, reason) for a closed convex XY polygon extruded over z.
 
@@ -30,6 +97,8 @@ def clearance(mesh, footprint, z0, z1):
         raise ValueError('need a nonempty convex prism')
     if not mesh.is_watertight or not mesh.is_winding_consistent:
         return False,'invalid closed oriented mesh'
+    if _components_intersect(mesh):
+        return False,'intersecting disconnected surface components'
     tri=np.asarray(mesh.triangles,float)
     if not len(tri) or not np.isfinite(tri).all():return False,'invalid triangles'
     lo=tri.min(axis=1);hi=tri.max(axis=1);x0,y0,x1,y1=footprint.bounds
