@@ -29,4 +29,41 @@ class ClearanceTests(unittest.TestCase):
         a=np.array([[0,0,-1],[2,0,1],[0,2,1]],float);p=clip(a,0,True);self.assertEqual(len(p),4);self.assertTrue(np.all(p[:,2]>=0));self.assertEqual(np.count_nonzero(p[:,2]==0),2)
     def test_contact_is_conservatively_rejected(self):
         self.assertFalse(clearance(self.m,box(1,-.2,1.2,.2),-.2,.2)[0])
+
+    def test_overlapping_opposite_shells_cannot_cancel_winding(self):
+        outer = trimesh.creation.box(extents=[4, 4, 4])
+        overlap = trimesh.creation.box(extents=[3, 3, 3])
+        overlap.apply_translation([0.5, 0, 0])
+        overlap.invert()
+        mesh = trimesh.util.concatenate([outer, overlap])
+        self.assertTrue(mesh.is_watertight and mesh.is_winding_consistent)
+        ok, reason = clearance(mesh, box(0.1, 0.1, 0.2, 0.2), -0.2, 0.2)
+        self.assertFalse(ok)
+        self.assertIn('intersecting disconnected', reason)
+
+    def test_nested_reverse_shell_preserves_cavity(self):
+        outer = trimesh.creation.box(extents=[4, 4, 4])
+        cavity = trimesh.creation.box(extents=[1, 1, 1])
+        cavity.invert()
+        mesh = trimesh.util.concatenate([outer, cavity])
+        self.assertTrue(mesh.is_watertight and mesh.is_winding_consistent)
+        self.assertTrue(clearance(mesh, box(-0.2, -0.2, 0.2, 0.2), -0.2, 0.2)[0])
+
+    def test_disjoint_reverse_shells_do_not_create_false_collision(self):
+        left = trimesh.creation.box(extents=[2, 2, 2])
+        right = trimesh.creation.box(extents=[1, 1, 1])
+        right.apply_translation([10, 0, 0])
+        right.invert()
+        mesh = trimesh.util.concatenate([left, right])
+        self.assertTrue(clearance(mesh, box(4, 4, 5, 5), -0.2, 0.2)[0])
+
+    def test_tangent_disconnected_components_fail_closed(self):
+        left = trimesh.creation.box(extents=[2, 2, 2])
+        right = trimesh.creation.box(extents=[2, 2, 2])
+        right.apply_translation([2, 0, 0])
+        mesh = trimesh.util.concatenate([left, right])
+        ok, reason = clearance(mesh, box(4, 4, 5, 5), -0.2, 0.2)
+        self.assertFalse(ok)
+        self.assertIn('intersecting disconnected', reason)
+
 if __name__=='__main__':unittest.main()
