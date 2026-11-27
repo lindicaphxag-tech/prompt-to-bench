@@ -66,4 +66,43 @@ class ClearanceTests(unittest.TestCase):
         self.assertFalse(ok)
         self.assertIn('intersecting disconnected', reason)
 
+
+
+class AdaptiveAxisTests(unittest.TestCase):
+    @staticmethod
+    def brute(alo, ahi, blo, bhi):
+        mask = ((ahi[:, None, :] >= blo[None, :, :]) &
+                (bhi[None, :, :] >= alo[:, None, :])).all(axis=2)
+        return set(map(tuple, np.argwhere(mask)))
+
+    def test_random_exact_pairs(self):
+        from clearance_axis import candidate_pairs
+        rng = np.random.default_rng(20261128)
+        for _ in range(600):
+            a = rng.uniform(-10, 10, (rng.integers(1, 70), 3))
+            b = rng.uniform(-10, 10, (rng.integers(1, 70), 3))
+            c, d = a + rng.uniform(0, 5, a.shape), b + rng.uniform(0, 5, b.shape)
+            got = list(candidate_pairs(a,c,b,d))
+            self.assertEqual(set(got), self.brute(a,c,b,d))
+            self.assertEqual(len(got), len(set(got)))
+
+    def test_touching_and_zero_volume(self):
+        from clearance_axis import candidate_pairs
+        a=np.array([[0,0,0],[1,1,1]],float); b=a+1
+        c=np.array([[1,1,1],[2,2,2]],float)
+        self.assertEqual(set(candidate_pairs(a,b,c,c)), self.brute(a,b,c,c))
+
+    def test_disjoint_only_in_y(self):
+        from clearance_axis import candidate_pairs
+        a=np.zeros((100,3)); b=a+1; c=a.copy(); c[:,1]+=10
+        stats={}
+        self.assertEqual(list(candidate_pairs(a,b,c,c+1,stats)),[])
+        self.assertEqual(stats,{'prefix_candidates':0,'root_rejected':True})
+
+    def test_empty(self):
+        from clearance_axis import candidate_pairs
+        a=np.empty((0,3)); b=np.zeros((1,3))
+        self.assertEqual(list(candidate_pairs(a,a,b,b)),[])
+        self.assertEqual(list(candidate_pairs(b,b,a,a)),[])
+
 if __name__=='__main__':unittest.main()

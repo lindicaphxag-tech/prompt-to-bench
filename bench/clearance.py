@@ -3,6 +3,7 @@ Floating-point geometric check, not an interval-arithmetic certificate.
 """
 import numpy as np
 from shapely.geometry import MultiPoint, Polygon
+from clearance_axis import candidate_pairs
 
 
 def clip(poly, z, above):
@@ -65,21 +66,9 @@ def _components_intersect(mesh):
         ta, (alo, ahi) = triangles[i], bounds[i]
         for j in range(i + 1, len(parts)):
             tb, (blo, bhi) = triangles[j], bounds[j]
-            order = np.argsort(blo[:, 0])
-            sorted_min_x = blo[order, 0]
-            for k, tri_a in enumerate(ta):
-                end = np.searchsorted(sorted_min_x, ahi[k, 0], side='right')
-                candidates = order[:end]
-                if not len(candidates):
-                    continue
-                mask = ((bhi[candidates, 0] >= alo[k, 0]) &
-                        (bhi[candidates, 1] >= alo[k, 1]) &
-                        (blo[candidates, 1] <= ahi[k, 1]) &
-                        (bhi[candidates, 2] >= alo[k, 2]) &
-                        (blo[candidates, 2] <= ahi[k, 2]))
-                for q in candidates[mask]:
-                    if _triangles_overlap(tri_a, tb[q], tol):
-                        return True
+            for k, q in candidate_pairs(alo, ahi, blo, bhi):
+                if _triangles_overlap(ta[k], tb[q], tol):
+                    return True
     return False
 
 def clearance(mesh, footprint, z0, z1):
